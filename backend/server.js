@@ -1,7 +1,10 @@
 import { Server } from "socket.io";
 import { getDocument, updateDocument, updateDocumentName } from "./controller/document.js";
 import { mongoose } from "mongoose";
-const PORT = 8000;
+import dotenv from 'dotenv'
+dotenv.config();
+const PORT = process.env.PORT || 5000
+console.log(PORT)
 const io = new Server(PORT, {
   cors: {
     origin: 'http://localhost:3000',
@@ -9,7 +12,8 @@ const io = new Server(PORT, {
   }
 });
 
-const MONGODB_URI="mongodb+srv://kalpanakathait07:FDttncrZAjvDPFCR@cluster0.wr4isnk.mongodb.net/delete?retryWrites=true&w=majority";
+const MONGODB_URI=process.env.MONGODB_URI
+console.log(MONGODB_URI)
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 io.on('connection', socket => {

@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import { Avatar, Box, Input, List, ListItem, Typography } from "@mui/material";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useNavigate, useParams } from "react-router-dom";
 import { io } from "socket.io-client";
@@ -16,20 +16,75 @@ const Component = styled.div`
 
 // Quill toolbar options
 var toolbarOptions = [
-  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-  ['blockquote', 'code-block'],
-  [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-  [{ 'direction': 'rtl' }],                         // text direction
-  ['link', 'image', 'video'],
-  [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-  [{ 'header': [1, 2, 3, 4, 5, 6] }],
-  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-  [{ 'font': [] }],
-  [{ 'align': [] }],
-  ['clean'],                                        // remove formatting button
+  ["bold", "italic", "underline", "strike"], // toggled buttons
+  ["blockquote", "code-block"],
+  [
+    {
+      header: 1,
+    },
+    {
+      header: 2,
+    },
+  ], // custom button values
+  [
+    {
+      list: "ordered",
+    },
+    {
+      list: "bullet",
+    },
+  ],
+  [
+    {
+      script: "sub",
+    },
+    {
+      script: "super",
+    },
+  ], // superscript/subscript
+  [
+    {
+      indent: "-1",
+    },
+    {
+      indent: "+1",
+    },
+  ], // outdent/indent
+  [
+    {
+      direction: "rtl",
+    },
+  ], // text direction
+  ["link", "image", "video"],
+  [
+    {
+      size: ["small", false, "large", "huge"],
+    },
+  ], // custom dropdown
+  [
+    {
+      header: [1, 2, 3, 4, 5, 6],
+    },
+  ],
+  [
+    {
+      color: [],
+    },
+    {
+      background: [],
+    },
+  ], // dropdown with defaults from theme
+  [
+    {
+      font: [],
+    },
+  ],
+  [
+    {
+      align: [],
+    },
+  ],
+  ["clean"], // remove formatting button
 ];
 const Editor = () => {
   const navigate = useNavigate();
@@ -37,6 +92,8 @@ const Editor = () => {
   const [quill, setQuill] = useState();
   const [isCopied, setIsCopied] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
+  const [inputWidth, setInputWidth] = useState(100); // Initial width
+  const editorRef = useRef(null);
   const [documentName, setDocumentName] = useState("Google Docs");
   const currentUrl = window.location.href;
   useEffect(() => {
@@ -44,6 +101,7 @@ const Editor = () => {
     const savedDocumentName = urlParams.get("documentName");
     if (savedDocumentName) {
       setDocumentName(savedDocumentName);
+      setInputWidth(Math.max(100, savedDocumentName.length));
     } else {
       setDocumentName("Google Docs");
     }
@@ -58,6 +116,9 @@ const Editor = () => {
       ? urlParams.set("documentName", newName)
       : urlParams.delete("documentName");
     navigate(`?${urlParams.toString()}`);
+    const newInputWidth = Math.max(150, newName.length);
+    setInputWidth(newInputWidth);
+
     socket && socket.emit("update-document-name", newName);
   };
 
@@ -156,8 +217,10 @@ const Editor = () => {
       clearInterval(interval);
     };
   }, [socket, quill]);
+
   return (
     <Component style={{ backgroundColor: "#F5F5F5" }}>
+      {" "}
       {/* Document header */}
       <Box className="head">
         <Box
@@ -168,6 +231,7 @@ const Editor = () => {
             ml: "0.6",
           }}
         >
+          {" "}
           {/* Google Docs icon */}
           <svg
             class="MuiSvgIcon-root MuiSvgIcon-fontSizeLarge"
@@ -179,7 +243,7 @@ const Editor = () => {
           </svg>
           {/* Document name input */}
           <Input
-            size="sm"
+            size="lg"
             value={documentName}
             onChange={handleNameChange}
             onMouseLeave={handleMouseLeave}
@@ -189,6 +253,11 @@ const Editor = () => {
               mb: 0.5,
               font: 18,
               justifyContent: "center",
+              width: inputWidth,
+              "&:focus": {
+                outline: "none",
+                border: "0.5px solid",
+              },
             }}
             disableUnderline
             onFocus={() => setIsInputFocused(true)}
@@ -200,6 +269,7 @@ const Editor = () => {
         {/* Share button */}
         <CopyToClipboard text={currentUrl} onCopy={handleCopy}>
           <Box className="btn" onClick={handleCopy}>
+            {" "}
             {isCopied ? (
               <Typography variant="h6">Copied!</Typography>
             ) : (
@@ -211,14 +281,14 @@ const Editor = () => {
         <Box className="avatar">
           <a href="https://mail.google.com/">
             <Avatar
-              src="https://picsum.photos/seed/picsum/200/300"
+src = "https://img.freepik.com/premium-vector/avatar-profile-colorful-illustration-2_549209-82.jpg?w=2000"
+
               size="30"
               round={true}
             />
           </a>
         </Box>
       </Box>
-
       {/* Sidebar */}
       <Box
         sx={{
@@ -227,6 +297,7 @@ const Editor = () => {
         }}
       >
         <List sx={{ position: "fixed" }}>
+          {" "}
           {/* Calendar */}
           <ListItem
             button
@@ -294,9 +365,10 @@ const Editor = () => {
           </ListItem>
         </List>
       </Box>
-
       {/* Editor container */}
-      <Box className="container" id="container"></Box>
+      <Box Box className="container" id="container">
+        You can start the typing...
+      </Box>
     </Component>
   );
 };

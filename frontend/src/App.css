@@ -28,7 +28,7 @@
   margin-bottom: 6px;
 }
 .btn {
-  margin-left: 80%;
+  margin-left: 10px;
   margin-top: 10px;
   border: 1px;
   border-radius: 40px;
@@ -53,7 +53,6 @@
   padding: 5px 8px 5px 8px;
   margin-bottom: 6px;
   font-size: 18px;
-
   color: black;
   font-weight: 500;
 }
@@ -81,20 +80,9 @@ li {
   top: 0;
   width: 100%;
   z-index: 1;
+   overflow: hidden;
 }
 
-.left {
-  display: flex;
-  align-items: center;
-  margin-left: 10px;
-  flex: 1;
-}
-
-.right {
-  display: flex;
-  align-items: center;
-  flex: 1;
-}
 
 .ql-toolbar.ql-snow {
   display: flex;
@@ -108,4 +96,7 @@ li {
   background: #f3f3f3;
   border: none !important;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+}
+.ql-editor{
+  cursor: text;
 }
