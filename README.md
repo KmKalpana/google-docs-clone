@@ -16,7 +16,7 @@ To run the application locally, follow these steps:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/real-time-text-editor.git
+   git clone https://github.com/KmKalpana/google-docs-clone.git
    ```
 2. Install the dependencies:
  ```bash
