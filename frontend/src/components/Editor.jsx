@@ -93,7 +93,6 @@ const Editor = () => {
   const [isCopied, setIsCopied] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [inputWidth, setInputWidth] = useState(100); // Initial width
-  const editorRef = useRef(null);
   const [documentName, setDocumentName] = useState("Google Docs");
   const currentUrl = window.location.href;
   useEffect(() => {
@@ -116,7 +115,7 @@ const Editor = () => {
       ? urlParams.set("documentName", newName)
       : urlParams.delete("documentName");
     navigate(`?${urlParams.toString()}`);
-    const newInputWidth = Math.max(150, newName.length);
+    const newInputWidth = Math.max(150, newName.length*10);
     setInputWidth(newInputWidth);
 
     socket && socket.emit("update-document-name", newName);
@@ -212,7 +211,7 @@ const Editor = () => {
 
     const interval = setInterval(() => {
       socket && socket.emit("save-document", quill.getContents());
-    }, 2000);
+    }, 1500);
     return () => {
       clearInterval(interval);
     };
