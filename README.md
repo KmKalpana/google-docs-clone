@@ -6,7 +6,7 @@ This is a real-time collaborative text editor built using React, Node.js, and So
 
 - Real-time collaboration: Multiple users can edit a document simultaneously and see each other's changes in real-time.
 - Rich text editing: The text editor supports rich formatting options like bold, italic, underline, and more.
-- Autosave: The document is automatically saved every 2 seconds to prevent data loss.
+- Autosave: To prevent data loss, the document is automatically saved every 2 seconds. However, you need to refresh the page to see the modifications in shared documents.
 - Share document: Users can easily share the document with others by copying the document URL.
 
 ## Getting Started
