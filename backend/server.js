@@ -4,15 +4,18 @@ import { Server } from 'socket.io';
 import { getDocument, updateDocument, updateDocumentName } from './controller/document.js';
 import { mongoose } from 'mongoose';
 import dotenv from 'dotenv';
+import cors from 'cors'
 
 dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
+app.use(cors({
+origin:"https://google-docs-clone-frontend-js4w.vercel.app"
+}))
 const io = new Server(server, {
   cors: {
-    origin: [process.env.FRONTEND_URL],
-    methods: ['GET', 'POST'],
+    origin: [process.env.FRONTEND_URL,"https://google-docs-clone-frontend-js4w.vercel.app"],
   },
 });
 

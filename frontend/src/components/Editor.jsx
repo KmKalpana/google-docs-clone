@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import { Avatar, Box, Input, List, ListItem, Typography } from "@mui/material";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
-import React, { useEffect,  useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useNavigate, useParams } from "react-router-dom";
 import { io } from "socket.io-client";
@@ -92,7 +92,7 @@ const Editor = () => {
   const [quill, setQuill] = useState();
   const [isCopied, setIsCopied] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
-  const [inputWidth, setInputWidth] = useState(100); // Initial width
+  const [inputWidth, setInputWidth] = useState(200); // Initial width
   const [documentName, setDocumentName] = useState("Google Docs");
   const currentUrl = window.location.href;
   useEffect(() => {
@@ -100,7 +100,7 @@ const Editor = () => {
     const savedDocumentName = urlParams.get("documentName");
     if (savedDocumentName) {
       setDocumentName(savedDocumentName);
-      setInputWidth(Math.max(100, savedDocumentName.length));
+      setInputWidth(Math.max(200, savedDocumentName.length));
     } else {
       setDocumentName("Google Docs");
     }
@@ -115,7 +115,7 @@ const Editor = () => {
       ? urlParams.set("documentName", newName)
       : urlParams.delete("documentName");
     navigate(`?${urlParams.toString()}`);
-    const newInputWidth = Math.max(200, newName.length*10);
+    const newInputWidth = Math.max(200, newName.length * 10);
     setInputWidth(newInputWidth);
 
     socket && socket.emit("update-document-name", newName);
@@ -156,7 +156,7 @@ const Editor = () => {
   useEffect(() => {
     //https://google-docs-backend-server.onrender.com/
     //http://localhost:8000
-const socketServer = io("http://localhost:8000");
+    const socketServer = io("https://google-docs-backend-server.onrender.com/");
 
     setSocket(socketServer);
     return () => {
@@ -214,7 +214,7 @@ const socketServer = io("http://localhost:8000");
 
     const interval = setInterval(() => {
       socket && socket.emit("save-document", quill.getContents());
-    }, 1500);
+    }, 1000);
     return () => {
       clearInterval(interval);
     };
@@ -283,8 +283,7 @@ const socketServer = io("http://localhost:8000");
         <Box className="avatar">
           <a href="https://mail.google.com/">
             <Avatar
-src = "https://img.freepik.com/premium-vector/avatar-profile-colorful-illustration-2_549209-82.jpg?w=2000"
-
+              src="https://img.freepik.com/premium-vector/avatar-profile-colorful-illustration-2_549209-82.jpg?w=2000"
               size="30"
               round={true}
             />
@@ -368,8 +367,7 @@ src = "https://img.freepik.com/premium-vector/avatar-profile-colorful-illustrati
         </List>
       </Box>
       {/* Editor container */}
-      <Box Box className="container" id="container">
-        You can start the typing...
+      <Box className="container" id="container">
       </Box>
     </Component>
   );
