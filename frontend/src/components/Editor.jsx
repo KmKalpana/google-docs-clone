@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import { Avatar, Box, Input, List, ListItem, Typography } from "@mui/material";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect,  useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useNavigate, useParams } from "react-router-dom";
 import { io } from "socket.io-client";
@@ -115,7 +115,7 @@ const Editor = () => {
       ? urlParams.set("documentName", newName)
       : urlParams.delete("documentName");
     navigate(`?${urlParams.toString()}`);
-    const newInputWidth = Math.max(150, newName.length*10);
+    const newInputWidth = Math.max(200, newName.length*10);
     setInputWidth(newInputWidth);
 
     socket && socket.emit("update-document-name", newName);
@@ -154,7 +154,10 @@ const Editor = () => {
   }, []);
 
   useEffect(() => {
-    const socketServer = io("http://localhost:8000");
+    //https://google-docs-backend-server.onrender.com/
+    //http://localhost:8000
+const socketServer = io("http://localhost:8000");
+
     setSocket(socketServer);
     return () => {
       socketServer.disconnect();
